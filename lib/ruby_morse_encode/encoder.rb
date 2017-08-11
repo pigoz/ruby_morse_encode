@@ -7,7 +7,7 @@ module RubyMorseEncode
 
     def call
       ast = Tokenizer.new(@input).()
-      encoders = get_encoders(@processor)
+      encoders = fetch_encoders(@processor)
       result = encoders.reduce(ast) do |prev_ast, encoder_klass|
         prev_ast.visit { |letter| encoder_klass.new(letter).() }
       end
@@ -16,7 +16,7 @@ module RubyMorseEncode
 
     private
 
-    def get_encoders(name)
+    def fetch_encoders(name)
       {
         none: [],
         morse: [Morse],
