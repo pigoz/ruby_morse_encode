@@ -8,7 +8,7 @@ module RubyMorseEncode
       MAPPING[@letter.upcase]
     end
 
-    RULES = IO.read(File.expand_path('morse_rules', __dir__)).freeze
+    RULES = IO.read(File.expand_path('rules', __dir__)).freeze
     MAPPING = Hash[RULES.strip.lines.map {|x| x.split(' ')}].freeze
   end
 end
