@@ -40,9 +40,15 @@ RSpec.describe RubyMorseEncode::Encoder do
     expect(subject.()).to eql("4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1")
   end
 
-  it 'handles input outside out alphabet' do
+  it 'handles input outside morse alphabet' do
     input = "日本語を喋るの話できないです"
     subject = command.new(input, pipeline: :obfuscate)
     expect { subject.() }.to raise_error(ArgumentError, "invalid input '日'")
+  end
+
+  it 'handles whitespace only input' do
+    input = "\n\n\n"
+    subject = command.new(input, pipeline: :obfuscate)
+    expect(subject.()).to eql("\n\n")
   end
 end
