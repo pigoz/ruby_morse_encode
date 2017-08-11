@@ -1,5 +1,5 @@
 require "ruby_morse_encode/version"
+require "ruby_morse_encode/encoder"
 
 module RubyMorseEncode
-  # Your code goes here...
 end

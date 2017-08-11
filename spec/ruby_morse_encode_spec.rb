@@ -5,7 +5,9 @@ RSpec.describe RubyMorseEncode do
     expect(RubyMorseEncode::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  let(:command) { RubyMorseEncode::Encoder }
+
+  it "tokenizes input" do
+    expect(command.new('I AM IN TROUBLE').()).to eql('I/A|M/I|N/T|R|O|U|B|L|E')
   end
 end
