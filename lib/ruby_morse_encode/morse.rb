@@ -5,7 +5,9 @@ module RubyMorseEncode
     end
 
     def call
-      MAPPING[@letter.upcase]
+      MAPPING.fetch(@letter.upcase) do
+        raise ArgumentError, "invalid input '#{@letter}'"
+      end
     end
 
     RULES = IO.read(File.expand_path('rules', __dir__)).freeze

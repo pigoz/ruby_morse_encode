@@ -1,10 +1,6 @@
 require "spec_helper"
 
-RSpec.describe RubyMorseEncode do
-  it "has a version number" do
-    expect(RubyMorseEncode::VERSION).not_to be nil
-  end
-
+RSpec.describe RubyMorseEncode::Encoder do
   let(:command) { RubyMorseEncode::Encoder }
   let(:hello) { 'HELLO' }
   let(:trouble) { 'I AM IN TROUBLE' }
@@ -42,5 +38,11 @@ RSpec.describe RubyMorseEncode do
   it 'converts multiline input to obfuscated morse' do
     subject = command.new(multiline, pipeline: :obfuscate)
     expect(subject.()).to eql("4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1")
+  end
+
+  it 'handles input outside out alphabet' do
+    input = "日本語を喋るの話できないです"
+    subject = command.new(input, pipeline: :obfuscate)
+    expect { subject.() }.to raise_error(ArgumentError, "invalid input '日'")
   end
 end

@@ -38,6 +38,7 @@ begin
   parser.parse!
   puts klass.new(input(stdin), pipeline: pipeline).()
   rescue OptionParser::ParseError => error
+  rescue ArgumentError => error
   $stderr.puts error
   $stderr.puts "(-h or --help will show valid options)"
   exit 1
