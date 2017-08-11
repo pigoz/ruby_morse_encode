@@ -7,9 +7,9 @@ module RubyMorseEncode
     def call
       Ast.new(@input.lines.map do |line|
         Line.new(line.split(' ').map do |word|
-          letters = word.split('')
-          tokenized_letters = letters.map { |letter| Letter.new(letter) }
-          Word.new(tokenized_letters)
+          Word.new(word.split('').map do |letter|
+            Letter.new(letter)
+          end)
         end)
       end)
     end
