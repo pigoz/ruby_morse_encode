@@ -24,9 +24,19 @@ module RubyMorseEncode
       }.fetch(name)
     end
 
-    class Ast < Struct.new(:words)
+    class Ast < Struct.new(:lines)
       def visit(&block)
-        self.class.new(words.map { |w| w.visit(&block) })
+        self.class.new(lines.map { |w| w.visit(&block) })
+      end
+
+      def to_s
+        lines.map(&:to_s).join("\n")
+      end
+    end
+
+    class Line < Struct.new(:words)
+      def visit(&block)
+        self.class.new(words.map { |l| l.visit(&block) })
       end
 
       def to_s
@@ -55,10 +65,12 @@ module RubyMorseEncode
     end
 
     def tokenize(input)
-      Ast.new(input.split(' ').map do |word| 
-        letters = word.split('')
-        tokenized_letters = letters.map { |letter| Letter.new(letter) }
-        Word.new(tokenized_letters)
+      Ast.new(input.lines.map do |line|
+        Line.new(line.split(' ').map do |word|
+          letters = word.split('')
+          tokenized_letters = letters.map { |letter| Letter.new(letter) }
+          Word.new(tokenized_letters)
+        end)
       end)
     end
   end
