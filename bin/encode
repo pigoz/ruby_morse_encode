@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.expand_path('lib', File.dirname(__dir__)))
+require 'ruby_morse_encode'
+
+puts RubyMorseEncode::Encoder.new(ARGV[0], processor: :obfuscate).()
