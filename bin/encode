@@ -2,5 +2,43 @@
 
 $LOAD_PATH.unshift(File.expand_path('lib', File.dirname(__dir__)))
 require 'ruby_morse_encode'
+require 'optparse'
 
-puts RubyMorseEncode::Encoder.new(ARGV[0], processor: :obfuscate).()
+klass = RubyMorseEncode::Encoder
+
+pipeline = :obfuscate
+stdin = nil
+
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: encode [options] input"
+
+  opts.on(
+    "--pipeline=PIPELINE",
+    klass::PIPELINES.keys,
+    "pipeline (#{klass::PIPELINES.keys.map(&:to_s).join(', ')})"
+  ) do |t|
+    pipeline = t.intern
+  end
+
+  opts.on("--stdin", "reads input from stdin") do |t|
+    stdin = t
+  end
+end
+
+def input(stdin)
+  if stdin
+    $stdin.read
+  else
+    raise OptionParser::ParseError, 'please provide an input' if ARGV.size < 1
+    ARGV[0]
+  end
+end
+
+begin
+  parser.parse!
+  puts klass.new(input(stdin), pipeline: pipeline).()
+  rescue OptionParser::ParseError => error
+  $stderr.puts error
+  $stderr.puts "(-h or --help will show valid options)"
+  exit 1
+end
