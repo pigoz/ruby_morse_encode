@@ -15,32 +15,32 @@ RSpec.describe RubyMorseEncode do
   end
 
   it 'converts to morse' do
-    subject = command.new(trouble, processor: :morse)
+    subject = command.new(trouble, pipeline: :morse)
     expect(subject.()).to eql('../.-|--/..|-./-|.-.|---|..-|-...|.-..|.')
   end
 
   it 'converts to morse when using .' do
-    subject = command.new('I.', processor: :morse)
+    subject = command.new('I.', pipeline: :morse)
     expect(subject.()).to eql('..|.-.-.-')
   end
 
   it 'converts multiline input to morse' do
-    subject = command.new(multiline, processor: :morse)
+    subject = command.new(multiline, pipeline: :morse)
     expect(subject.()).to eql("....|.|.-..|.-..|---\n../.-|--/..|-./-|.-.|---|..-|-...|.-..|.")
   end
 
   it 'converts to obfuscated morse' do
-    subject = command.new(trouble, processor: :obfuscate)
+    subject = command.new(trouble, pipeline: :obfuscate)
     expect(subject.()).to eql('2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1')
   end
 
   it 'converts to obfuscated morse when using .' do
-    subject = command.new('I.', processor: :obfuscate)
+    subject = command.new('I.', pipeline: :obfuscate)
     expect(subject.()).to eql('2|1A1A1A')
   end
 
   it 'converts multiline input to obfuscated morse' do
-    subject = command.new(multiline, processor: :obfuscate)
+    subject = command.new(multiline, pipeline: :obfuscate)
     expect(subject.()).to eql("4|1|1A2|1A2|C\n2/1A|B/2|A1/A|1A1|C|2A|A3|1A2|1")
   end
 end
