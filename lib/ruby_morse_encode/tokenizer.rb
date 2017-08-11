@@ -14,35 +14,21 @@ module RubyMorseEncode
       end)
     end
 
-    class Ast < Struct.new(:lines)
-      def visit(&block)
-        self.class.new(lines.map { |w| w.visit(&block) })
-      end
+    def self.AstListNode(separator)
+      Class.new(Struct.new(:list)) do
+        def visit(&block)
+          self.class.new(list.map { |w| w.visit(&block) })
+        end
 
-      def to_s
-        lines.map(&:to_s).join("\n")
+        define_method :to_s do
+          list.map(&:to_s).join(separator)
+        end
       end
     end
 
-    class Line < Struct.new(:words)
-      def visit(&block)
-        self.class.new(words.map { |l| l.visit(&block) })
-      end
-
-      def to_s
-        words.map(&:to_s).join('/')
-      end
-    end
-
-    class Word < Struct.new(:letters)
-      def visit(&block)
-        self.class.new(letters.map { |l| l.visit(&block) })
-      end
-
-      def to_s
-        letters.map(&:to_s).join('|')
-      end
-    end
+    Ast = AstListNode("\n")
+    Line = AstListNode("/")
+    Word = AstListNode("|")
 
     class Letter < Struct.new(:letter)
       def visit(&block)
